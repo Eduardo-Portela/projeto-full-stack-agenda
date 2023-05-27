@@ -20,3 +20,13 @@ model User {
 
   @@map("users")
 }
+
+model Contact {
+  id String @id
+  fullName String
+  email String
+  phone String
+  createdAt DateTime @default(now())
+
+  @@map("contacts")
+}
