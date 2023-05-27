@@ -5,6 +5,7 @@ export class User {
     readonly id: string
     fullName: string
     email: string
+    phone: string
 
     @Exclude()
     password: string
