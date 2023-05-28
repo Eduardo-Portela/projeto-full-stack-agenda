@@ -4,7 +4,7 @@ import { CreateContatctDTO } from "../../dto/create-contact.dto";
 import { UpdateContactDto } from "../../dto/update-contact.dto";
 import { Contact } from "../../entitie/contact.entitie";
 import { PrismaService } from "src/modules/database/prisma.service";
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
 
 
@@ -12,7 +12,7 @@ import { Prisma } from "@prisma/client";
 export class ContactsPrismaRepository implements ContactsRepository{
     constructor(private prisma: PrismaService){}
 
-    async create(data: CreateContatctDTO): Promise<Contact> {
+    async create(data: CreateContatctDTO, user_Id: string): Promise<Contact> {
         const contact: Contact = new Contact()
         Object.assign(contact, {
             ...data
@@ -24,7 +24,7 @@ export class ContactsPrismaRepository implements ContactsRepository{
                 email: contact.email,
                 fullName: contact.fullName,
                 phone: contact.phone,
-                user_Id: contact.user_id
+                user_Id
             }
         })
         return newContact
@@ -35,6 +35,17 @@ export class ContactsPrismaRepository implements ContactsRepository{
         })
         return contact
     }
+
+    async findByIdAndEmail(id: string, email: string): Promise<Contact> {
+        const contact: Contact = await this.prisma.contact.findFirst({
+            where: {
+                user_Id: id,
+                email: email
+            }
+        })
+        return contact
+    } 
+
     async findAll(): Promise<Contact[]> {
         const contacts: Contact[] = await this.prisma.contact.findMany()
 

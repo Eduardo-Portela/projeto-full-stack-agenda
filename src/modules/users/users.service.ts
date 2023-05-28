@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './repositories/users.repository';
@@ -22,6 +22,14 @@ export class UsersService {
     const findUser = await this.usersRepository.findOne(id)
     if(!findUser){
       throw new NotFoundException("User not found!")
+    }
+    return findUser
+  }
+
+  async findByEmail(email: string) {
+    const findUser = await this.usersRepository.findByEmail(email)
+    if(!findUser){
+      throw new UnauthorizedException("Invalid Email or Password")
     }
     return findUser
   }
