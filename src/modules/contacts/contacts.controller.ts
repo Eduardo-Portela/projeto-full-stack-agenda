@@ -1,15 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
 import { CreateContatctDTO } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('contacts')
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
   @Post()
-  create(@Body() createContactDto: CreateContatctDTO){
-    return this.contactsService.create(createContactDto)
+  @UseGuards(JwtAuthGuard)
+  create(@Body() createContactDto: CreateContatctDTO, @Request() req){
+    return this.contactsService.create(createContactDto, req.user.id)
   }
 
   @Get()

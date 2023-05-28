@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateContatctDTO } from './dto/create-contact.dto';
 import { ContactsRepository } from './repositories/contact.repository';
 import { Contact } from './entitie/contact.entitie';
@@ -9,8 +9,12 @@ import { Prisma } from '@prisma/client';
 export class ContactsService {
     constructor(private ContactsRepository: ContactsRepository){}
     
-    async create(createContatctDTO: CreateContatctDTO){
-        const contact: Contact = await this.ContactsRepository.create(createContatctDTO)
+    async create(createContatctDTO: CreateContatctDTO, user_Id: string){
+        const findContact: Contact = await this.ContactsRepository.findByIdAndEmail(user_Id, createContatctDTO.email)
+        if(findContact){
+            throw new ConflictException("Contact Already Exists!")
+        }
+        const contact: Contact = await this.ContactsRepository.create(createContatctDTO, user_Id)
         return contact
     }
 

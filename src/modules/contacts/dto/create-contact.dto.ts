@@ -13,8 +13,4 @@ export class CreateContatctDTO {
     @IsString()
     @IsNotEmpty()
     phone: string
-
-    @IsString()
-    @IsNotEmpty()
-    user_id?: string
 }

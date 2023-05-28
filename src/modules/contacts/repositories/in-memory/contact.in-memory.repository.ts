@@ -3,16 +3,18 @@ import { Contact } from './../../entitie/contact.entitie';
 import { ContactsRepository } from "../contact.repository";
 import { CreateContatctDTO } from "../../dto/create-contact.dto";
 import { UpdateContactDto } from "../../dto/update-contact.dto";
+import { User } from "@prisma/client";
 
 @Injectable()
 
 export class ContactsInMemoryRepository implements ContactsRepository{
     private database: Contact[] = []
     
-    async create (data: CreateContatctDTO): Promise<Contact>{
+    async create (data: CreateContatctDTO, user_Id: string): Promise<Contact>{
         const newContact = new Contact()
         Object.assign(newContact, {
-            ...data
+            ...data,
+            user_Id: user_Id
         })
         this.database.push(newContact)
 
@@ -23,6 +25,11 @@ export class ContactsInMemoryRepository implements ContactsRepository{
         const contact = this.database.find(contact => contact.id === id)
         return contact
     }
+
+    async findByIdAndEmail(user_Id: string, email: string): Promise<Contact> {
+        const contact: Contact = this.database.find(cont => cont.user_id == user_Id && cont.email == email)
+        return contact 
+    } 
 
     async findAll(): Promise<Contact[]> {
         return this.database
