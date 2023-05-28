@@ -35,6 +35,8 @@ $ npm install
 ## Running the app
 
 ```bash
+$ npm install
+
 # development
 $ npm run start
 
@@ -56,6 +58,10 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+```
+## Documentation
+```
+https://localhost:3000/api
 ```
 
 ## Support
