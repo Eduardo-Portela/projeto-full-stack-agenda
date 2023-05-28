@@ -26,7 +26,7 @@ export class UsersPrismaRespository implements UsersRepository{
     }
 
     async findAll(): Promise<User[]> {
-        const allUsers: User[] = await this.prisma.user.findMany()
+        const allUsers: User[] = await this.prisma.user.findMany({})
         return plainToInstance(User, allUsers)
         
     }
@@ -37,6 +37,13 @@ export class UsersPrismaRespository implements UsersRepository{
         })
         return plainToInstance(User, user)
     }
+
+    async findByEmail(email: string): Promise<User> {
+        const user: User = await this.prisma.user.findFirst({
+            where: {email},
+        })
+        return plainToInstance(User, user)
+    }    
 
     async update(id: string, data: UpdateUserDto): Promise<User> {
         const user = await this.prisma.user.update({

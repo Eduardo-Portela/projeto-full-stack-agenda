@@ -18,6 +18,10 @@ export class UsersInMemoryRepository implements UsersRepository {
         return users
     }
 
+    findByEmail(email: string): Promise<User> {
+        return 
+    }
+
      findOne(id: string): User | Promise<User> {
         const user = users.find((user) => user.id == id)
         return user

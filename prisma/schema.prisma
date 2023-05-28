@@ -13,10 +13,11 @@ datasource db {
 model User {
   id String @id
   fullName String
-  email String
+  email String @unique
   phone String
   password String
   createdAt DateTime @default(now())
+  contacts Contact[]
 
   @@map("users")
 }
@@ -24,9 +25,10 @@ model User {
 model Contact {
   id String @id
   fullName String
-  email String
-  phone String
+  email String @unique
+  phone String @unique
   createdAt DateTime @default(now())
-
+  user User @relation(fields: [user_Id], references: [id])
+  user_Id String
   @@map("contacts")
 }

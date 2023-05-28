@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './repositories/users.repository';
@@ -7,6 +7,10 @@ import { UsersRepository } from './repositories/users.repository';
 export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
   async create(createUserDto: CreateUserDto) {
+    const findUser = await this.usersRepository.findByEmail(createUserDto.email)
+    if(findUser){
+      throw new ConflictException("User already exists.")
+    }
     return await this.usersRepository.create(createUserDto)
   }
 
