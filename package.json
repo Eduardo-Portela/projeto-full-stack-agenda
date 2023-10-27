@@ -70,7 +70,7 @@
   },
 
   "engines": {
-    "node": "≥16 <19"
+    "node": ">=18 < 19"
   },
   "jest": {
     "moduleFileExtensions": [
